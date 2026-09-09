@@ -50,15 +50,33 @@
             text-decoration: none;
         }
 
-        .left-decor {
-            position: absolute;
-            left: 20px;
-            top: 100px;
+        .welcome {
+            display: flex;
+            align-items: center;
+            margin-top: 35px;
+            margin-left: 20px;
+            gap: 25px;
         }
 
         .left-decor img {
-            width: 300px;
+            width: 120px;
             height: auto;
+        }
+
+        .welcome-text {
+            font-family: 'Chicken Pie', sans-serif;
+            color: black;
+        }
+
+        .welcome-text h1 {
+            font-size: 42px;
+            margin: 0 0 8px 0;
+            font-weight: normal;
+        }
+
+        .welcome-text p {
+            font-size: 22px;
+            margin: 0;
         }
     </style>
 </head>
@@ -82,8 +100,17 @@
 
     </nav>
 
-    <div class="left-decor">
-        <img src="./decor.png" alt="">
+    <div class="welcome">
+
+        <div class="left-decor">
+            <img src="./decor.png" alt="">
+        </div>
+
+        <div class="welcome-text">
+            <h1>welcome to ruby vlogs !</h1>
+            <p>little moments, random thoughts &amp; things i love</p>
+        </div>
+
     </div>
 
 </body>
