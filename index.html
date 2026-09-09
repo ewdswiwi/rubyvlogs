@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: 'Chicken Pie';
-            src: url('chickenpie.ttf') format('truetype');
+            src: url('./chickenpie.ttf') format('truetype');
         }
 
         html, body {
@@ -49,13 +49,25 @@
             color: black;
             text-decoration: none;
         }
+
+        .left-decor {
+            position: absolute;
+            left: 20px;
+            top: 100px;
+        }
+
+        .left-decor img {
+            width: 120px;
+            height: auto;
+        }
     </style>
 </head>
 
 <body>
 
     <nav>
-        <img src="tulip.png" class="nav-icon">
+
+        <img src="./tulip.png" class="nav-icon" alt="Tulip">
 
         <div class="nav-links">
             <a href="#">Home</a>
@@ -66,8 +78,13 @@
             <a href="#">Your Account</a>
         </div>
 
-        <img src="cake.png" class="nav-icon">
+        <img src="./cake.png" class="nav-icon" alt="Cake">
+
     </nav>
+
+    <div class="left-decor">
+        <img src="./decor.png" alt="">
+    </div>
 
 </body>
 </html>
