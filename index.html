@@ -17,28 +17,55 @@
 
         nav {
             background-color: #fcebfa;
-            padding: 18px;
-            text-align: center;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             font-family: 'Chicken Pie', sans-serif;
+        }
+
+        .nav-icon {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 35px;
         }
 
         nav a {
             color: black;
             text-decoration: none;
-            margin: 0 18px;
         }
     </style>
 </head>
 
-<body>
+<body> body {
+    margin: 0;
+    background-image: url('polka.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
 
     <nav>
-        <a href="#">Home</a>
-        <a href="#">Vlogs</a>
-        <a href="#">Updates</a>
-        <a href="#">Themes</a>
-        <a href="#">Playlist</a>
-        <a href="#">Your Account</a>
+
+        <img src="tulip.png" class="nav-icon">
+
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Vlogs</a>
+            <a href="#">Updates</a>
+            <a href="#">Themes</a>
+            <a href="#">Playlist</a>
+            <a href="#">Your Account</a>
+        </div>
+
+        <img src="cake.png" class="nav-icon">
+
     </nav>
 
 </body>
