@@ -11,14 +11,18 @@
             src: url('chickenpie.ttf') format('truetype');
         }
 
-    body {
-    margin: 0;
-    min-height: 100vh;
-    background-image: url('polka.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
-    }
+        html, body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            background-image: url('./polka.jpg');
+            background-repeat: repeat;
+            background-size: auto;
+            background-position: top center;
+        }
 
         nav {
             background-color: #fcebfa;
@@ -51,7 +55,6 @@
 <body>
 
     <nav>
-
         <img src="tulip.png" class="nav-icon">
 
         <div class="nav-links">
@@ -64,7 +67,6 @@
         </div>
 
         <img src="cake.png" class="nav-icon">
-
     </nav>
 
 </body>
