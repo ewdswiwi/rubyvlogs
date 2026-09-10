@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account - Ruby Vlogs</title>
+
+    <style>
+        @font-face {
+            font-family: 'Chicken Pie';
+            src: url('./chickenpie.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-image: url('./polka.jpg');
+            background-repeat: repeat;
+            font-family: 'Chicken Pie', sans-serif;
+        }
+
+        .account-box {
+            width: 350px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: #fcebfa;
+            text-align: center;
+            border-radius: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            display: block;
+            width: 90%;
+            margin: 12px auto;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            background-color: white;
+            font-family: inherit;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="account-box">
+        <h1>Your Account</h1>
+
+        <input type="email" placeholder="your email">
+        <input type="password" placeholder="your password">
+
+        <button>Log in</button>
+        <button>Sign up</button>
+    </div>
+
+</body>
+</html>
