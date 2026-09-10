@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Account - Ruby Vlogs</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         @font-face {
             font-family: 'Chicken Pie';
@@ -21,7 +23,8 @@
 
         .account-box {
             width: 350px;
-            margin: 80px auto;
+            max-width: 80%;
+            margin: 70px auto;
             padding: 30px;
             background-color: #fcebfa;
             text-align: center;
@@ -33,7 +36,7 @@
             margin-bottom: 25px;
         }
 
-        input {
+        input, textarea {
             display: block;
             width: 90%;
             margin: 12px auto;
@@ -41,30 +44,329 @@
             border: none;
             border-radius: 10px;
             font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
         }
 
         button {
             padding: 12px 25px;
+            margin: 5px;
             border: none;
             border-radius: 10px;
             background-color: white;
             font-family: inherit;
             cursor: pointer;
         }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 10px auto 20px;
+            background-color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #message, #profile-message {
+            margin-top: 15px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="account-box">
+    <!-- LOGIN / SIGN UP -->
+    <div class="account-box" id="login-area">
+
         <h1>Your Account</h1>
 
-        <input type="email" placeholder="your email">
-        <input type="password" placeholder="your password">
+        <input type="email" id="email" placeholder="your email">
+        <input type="password" id="password" placeholder="your password">
 
-        <button>Log in</button>
-        <button>Sign up</button>
+        <button onclick="login()">Log in</button>
+        <button onclick="signup()">Sign up</button>
+
+        <p id="message"></p>
+
     </div>
+
+
+    <!-- PROFILE -->
+    <div class="account-box hidden" id="profile-area">
+
+        <h1>My Profile</h1>
+
+        <img
+            id="profile-picture"
+            class="profile-pic"
+            src="https://placehold.co/120x120"
+            alt="Profile picture"
+        >
+
+        <input
+            type="file"
+            id="avatar"
+            accept="image/png,image/jpeg,image/webp"
+        >
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Your name"
+            maxlength="30"
+        >
+
+        <textarea
+            id="bio"
+            placeholder="Tell us something about yourself..."
+            maxlength="150"
+        ></textarea>
+
+        <button onclick="saveProfile()">Save profile</button>
+
+        <p id="profile-message"></p>
+
+        <button onclick="logout()">Log out</button>
+
+    </div>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            'https://qkllbppmadoppdrygbnk.supabase.co';
+
+        // SADECE BURAYA KENDİ PUBLISHABLE KEY'İNİ YAPIŞTIR
+        const SUPABASE_KEY =
+            'sb_publishable_olqN38wHdUBKRQho558Bdg_kTnoAxsb';
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        checkUser();
+
+
+        async function checkUser() {
+
+            const {
+                data: { user }
+            } = await supabaseClient.auth.getUser();
+
+            if (user) {
+                showProfile(user);
+            } else {
+                showLogin();
+            }
+        }
+
+
+        async function signup() {
+
+            const email =
+                document.getElementById('email').value.trim();
+
+            const password =
+                document.getElementById('password').value;
+
+            const message =
+                document.getElementById('message');
+
+            if (!email || !password) {
+                message.textContent =
+                    'Please enter your email and password.';
+                return;
+            }
+
+            if (password.length < 6) {
+                message.textContent =
+                    'Password must be at least 6 characters.';
+                return;
+            }
+
+            const { error } =
+                await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+            if (error) {
+                message.textContent = error.message;
+            } else {
+                message.textContent =
+                    'Account created! 🩷';
+            }
+        }
+
+
+        async function login() {
+
+            const email =
+                document.getElementById('email').value.trim();
+
+            const password =
+                document.getElementById('password').value;
+
+            const message =
+                document.getElementById('message');
+
+            const { data, error } =
+                await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+            if (error) {
+                message.textContent = error.message;
+                return;
+            }
+
+            showProfile(data.user);
+        }
+
+
+        function showLogin() {
+
+            document
+                .getElementById('login-area')
+                .classList.remove('hidden');
+
+            document
+                .getElementById('profile-area')
+                .classList.add('hidden');
+        }
+
+
+        function showProfile(user) {
+
+            document
+                .getElementById('login-area')
+                .classList.add('hidden');
+
+            document
+                .getElementById('profile-area')
+                .classList.remove('hidden');
+
+            document.getElementById('name').value =
+                user.user_metadata?.name || '';
+
+            document.getElementById('bio').value =
+                user.user_metadata?.bio || '';
+
+            const avatar =
+                user.user_metadata?.avatar_url;
+
+            if (avatar) {
+                document.getElementById(
+                    'profile-picture'
+                ).src = avatar;
+            }
+        }
+
+
+        async function saveProfile() {
+
+            const {
+                data: { user }
+            } = await supabaseClient.auth.getUser();
+
+            if (!user) return;
+
+            const name =
+                document.getElementById('name').value.trim();
+
+            const bio =
+                document.getElementById('bio').value.trim();
+
+            const avatarFile =
+                document.getElementById('avatar').files[0];
+
+            const message =
+                document.getElementById('profile-message');
+
+            let avatarURL =
+                user.user_metadata?.avatar_url || '';
+
+
+            if (avatarFile) {
+
+                const extension =
+                    avatarFile.name.split('.').pop();
+
+                const filePath =
+                    user.id + '/profile.' + extension;
+
+                const { error } =
+                    await supabaseClient.storage
+                        .from('avatars')
+                        .upload(
+                            filePath,
+                            avatarFile,
+                            { upsert: true }
+                        );
+
+                if (error) {
+                    message.textContent =
+                        'Photo upload error: ' + error.message;
+                    return;
+                }
+
+                const { data } =
+                    supabaseClient.storage
+                        .from('avatars')
+                        .getPublicUrl(filePath);
+
+                avatarURL = data.publicUrl;
+            }
+
+
+            const { error } =
+                await supabaseClient.auth.updateUser({
+                    data: {
+                        name: name,
+                        bio: bio,
+                        avatar_url: avatarURL
+                    }
+                });
+
+
+            if (error) {
+                message.textContent = error.message;
+                return;
+            }
+
+
+            if (avatarURL) {
+                document.getElementById(
+                    'profile-picture'
+                ).src = avatarURL;
+            }
+
+            message.textContent =
+                'Profile saved! 🩷';
+        }
+
+
+        async function logout() {
+
+            await supabaseClient.auth.signOut();
+
+            showLogin();
+        }
+
+    </script>
 
 </body>
 </html>
